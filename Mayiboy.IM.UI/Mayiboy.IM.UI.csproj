@@ -59,6 +59,10 @@
       <HintPath>..\packages\Framework.Mayiboy.Logging.1.0.0\lib\Framework.Mayiboy.Logging.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Framework.Mayiboy.Queue, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Framework.Mayiboy.Queue.1.0.0\lib\Framework.Mayiboy.Queue.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Framework.Mayiboy.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Framework.Mayiboy.Utility.1.0.1\lib\Framework.Mayiboy.Utility.dll</HintPath>
       <Private>True</Private>
@@ -81,19 +85,19 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="ServiceStack.Common, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Framework.Mayiboy.Caching.1.0.0\lib\ServiceStack.Common.dll</HintPath>
+      <HintPath>..\packages\Framework.Mayiboy.Queue.1.0.0\lib\ServiceStack.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="ServiceStack.Interfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Framework.Mayiboy.Caching.1.0.0\lib\ServiceStack.Interfaces.dll</HintPath>
+      <HintPath>..\packages\Framework.Mayiboy.Queue.1.0.0\lib\ServiceStack.Interfaces.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="ServiceStack.Redis, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Framework.Mayiboy.Caching.1.0.0\lib\ServiceStack.Redis.dll</HintPath>
+      <HintPath>..\packages\Framework.Mayiboy.Queue.1.0.0\lib\ServiceStack.Redis.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="ServiceStack.Text, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Framework.Mayiboy.Caching.1.0.0\lib\ServiceStack.Text.dll</HintPath>
+      <HintPath>..\packages\Framework.Mayiboy.Queue.1.0.0\lib\ServiceStack.Text.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
@@ -150,8 +154,27 @@
   <ItemGroup>
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
-    <Content Include="Framework.Mayiboy.Logging.config" />
-    <Content Include="Framework.Mayiboy.Caching.config" />
+    <Content Include="Framework.Mayiboy.Logging.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Framework.Mayiboy.Caching.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Framework.Mayiboy.Queue.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\prd\Framework.Mayiboy.Caching.config" />
+    <Content Include="Config\prd\Framework.Mayiboy.Logging.config" />
+    <Content Include="Config\prd\Framework.Mayiboy.Queue.config" />
+    <Content Include="Config\test\Framework.Mayiboy.Caching.config" />
+    <Content Include="Config\test\Framework.Mayiboy.Logging.config" />
+    <Content Include="Config\test\Framework.Mayiboy.Queue.config" />
+    <Content Include="Config\uat\Framework.Mayiboy.Caching.config" />
+    <Content Include="Config\uat\Framework.Mayiboy.Logging.config" />
+    <Content Include="Config\uat\Framework.Mayiboy.Queue.config" />
+    <Content Include="Config\prd\Web.config" />
+    <Content Include="Config\test\Web.config" />
+    <Content Include="Config\uat\Web.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

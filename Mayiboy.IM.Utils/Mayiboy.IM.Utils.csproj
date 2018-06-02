@@ -42,6 +42,10 @@
       <HintPath>..\packages\Framework.Mayiboy.Logging.1.0.0\lib\Framework.Mayiboy.Logging.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Framework.Mayiboy.Queue, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Framework.Mayiboy.Queue.1.0.0\lib\Framework.Mayiboy.Queue.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Framework.Mayiboy.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Framework.Mayiboy.Utility.1.0.1\lib\Framework.Mayiboy.Utility.dll</HintPath>
       <Private>True</Private>
@@ -59,19 +63,19 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="ServiceStack.Common, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Framework.Mayiboy.Caching.1.0.0\lib\ServiceStack.Common.dll</HintPath>
+      <HintPath>..\packages\Framework.Mayiboy.Queue.1.0.0\lib\ServiceStack.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="ServiceStack.Interfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Framework.Mayiboy.Caching.1.0.0\lib\ServiceStack.Interfaces.dll</HintPath>
+      <HintPath>..\packages\Framework.Mayiboy.Queue.1.0.0\lib\ServiceStack.Interfaces.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="ServiceStack.Redis, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Framework.Mayiboy.Caching.1.0.0\lib\ServiceStack.Redis.dll</HintPath>
+      <HintPath>..\packages\Framework.Mayiboy.Queue.1.0.0\lib\ServiceStack.Redis.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="ServiceStack.Text, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Framework.Mayiboy.Caching.1.0.0\lib\ServiceStack.Text.dll</HintPath>
+      <HintPath>..\packages\Framework.Mayiboy.Queue.1.0.0\lib\ServiceStack.Text.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -93,6 +97,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Framework.Mayiboy.Queue.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
