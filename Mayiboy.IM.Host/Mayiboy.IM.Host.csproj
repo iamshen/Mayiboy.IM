@@ -1,7 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
-  <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -24,6 +22,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,60 +46,61 @@
       <HintPath>..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Framework.Mayiboy.Caching, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Framework.Mayiboy.Caching.1.0.0\lib\Framework.Mayiboy.Caching.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Autofac.Integration.WebApi, Version=4.2.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.WebApi2.4.2.0\lib\net45\Autofac.Integration.WebApi.dll</HintPath>
     </Reference>
-    <Reference Include="Framework.Mayiboy.Ioc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Framework.Mayiboy.Ioc.1.0.1\lib\Framework.Mayiboy.Ioc.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="Framework.Mayiboy.Logging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Framework.Mayiboy.Logging.1.0.0\lib\Framework.Mayiboy.Logging.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Framework.Mayiboy.Caching, Version=1.0.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Framework.Mayiboy.Caching.1.0.7\lib\Framework.Mayiboy.Caching.dll</HintPath>
+    </Reference>
+    <Reference Include="Framework.Mayiboy.Ioc, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Framework.Mayiboy.Ioc.1.0.3\lib\Framework.Mayiboy.Ioc.dll</HintPath>
+    </Reference>
+    <Reference Include="Framework.Mayiboy.Logging, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Framework.Mayiboy.Logging.1.0.3\lib\Framework.Mayiboy.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Framework.Mayiboy.Queue, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Framework.Mayiboy.Queue.1.0.2\lib\Framework.Mayiboy.Queue.dll</HintPath>
     </Reference>
     <Reference Include="Framework.Mayiboy.Soa.Agent, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Framework.Mayiboy.Soa.Agent.1.0.2\lib\Framework.Mayiboy.Soa.Agent.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Framework.Mayiboy.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Framework.Mayiboy.Utility.1.0.1\lib\Framework.Mayiboy.Utility.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Framework.Mayiboy.Utility, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Framework.Mayiboy.Utility.1.0.9\lib\Framework.Mayiboy.Utility.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.84.0.0, Culture=neutral, PublicKeyToken=1b03e6acf1164f73">
-      <HintPath>..\packages\Framework.Mayiboy.Caching.1.0.0\lib\ICSharpCode.SharpZipLib.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Framework.Mayiboy.Caching.1.0.7\lib\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="Memcached.ClientLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Framework.Mayiboy.Caching.1.0.0\lib\Memcached.ClientLibrary.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Framework.Mayiboy.Caching.1.0.7\lib\Memcached.ClientLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Common, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Framework.Mayiboy.Caching.1.0.0\lib\ServiceStack.Common.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Framework.Mayiboy.Queue.1.0.2\lib\ServiceStack.Common.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Interfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Framework.Mayiboy.Caching.1.0.0\lib\ServiceStack.Interfaces.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Framework.Mayiboy.Queue.1.0.2\lib\ServiceStack.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Redis, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Framework.Mayiboy.Caching.1.0.0\lib\ServiceStack.Redis.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Framework.Mayiboy.Queue.1.0.2\lib\ServiceStack.Redis.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Text, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Framework.Mayiboy.Caching.1.0.0\lib\ServiceStack.Text.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Framework.Mayiboy.Queue.1.0.2\lib\ServiceStack.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="Swashbuckle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd1bb07a5ac7c7bc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Swashbuckle.Core.5.3.2\lib\net40\Swashbuckle.Core.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -117,6 +117,9 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Net.Http.Formatting">
@@ -131,10 +134,25 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Scripts\swaggerui\swagger_lang.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\AutoMapperConfig.cs" />
+    <Compile Include="App_Start\ChatManager.cs" />
+    <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="App_Start\WebApiFilterConfig.cs" />
+    <Compile Include="Controllers\BaseApiController.cs" />
+    <Compile Include="Controllers\ChannelController.cs" />
+    <Compile Include="Controllers\DemoController.cs" />
+    <Compile Include="Controllers\GroupController.cs" />
+    <Compile Include="Controllers\ImUserInfoController.cs" />
+    <Compile Include="Controllers\UserGroupController.cs" />
+    <Compile Include="Controllers\UserOnlineController.cs" />
+    <Compile Include="Controllers\WsController.cs" />
+    <Compile Include="Filter\HandleErrorAttribute.cs" />
+    <Compile Include="Filter\JsonpAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -144,6 +162,7 @@
     <Content Include="packages.config" />
     <Content Include="Framework.Mayiboy.Logging.config" />
     <Content Include="Framework.Mayiboy.Caching.config" />
+    <Content Include="Framework.Mayiboy.Queue.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -153,8 +172,25 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
     <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mayiboy.IM.Contract\Mayiboy.IM.Contract.csproj">
+      <Project>{cc823c88-6d37-4366-92cb-9e8a0532c9f2}</Project>
+      <Name>Mayiboy.IM.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mayiboy.IM.Logic\Mayiboy.IM.Logic.csproj">
+      <Project>{6da9f820-139d-44d5-ac0e-fd49a72a0553}</Project>
+      <Name>Mayiboy.IM.Logic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mayiboy.IM.Model\Mayiboy.IM.Model.csproj">
+      <Project>{576dc2af-3f8e-4c13-a407-a7c528b2ac23}</Project>
+      <Name>Mayiboy.IM.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mayiboy.IM.Utils\Mayiboy.IM.Utils.csproj">
+      <Project>{4e38f84c-fb97-4bdd-8852-44b7e3519ed3}</Project>
+      <Name>Mayiboy.IM.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -181,13 +217,6 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

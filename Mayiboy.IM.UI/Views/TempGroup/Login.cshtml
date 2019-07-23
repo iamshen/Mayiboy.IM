@@ -1,0 +1,105 @@
+﻿@using Mayiboy.IM.Contract
+@{
+    Layout = null;
+    var groupinfo = ViewBag.GroupInfo as GroupInfoDto;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>设置昵称</title>
+    <link href="~/Content/css/util.css" rel="stylesheet" />
+    <link href="~/Content/css/main.css" rel="stylesheet" />
+    <script src="~/Content/lib/jquery/jQuery-2.2.0.min.js"></script>
+    <script src="~/Content/lib/layui/layui.js"></script>
+    <link href="~/Content/css/tempgrouplogin.css" rel="stylesheet" />
+    <script src="~/Content/lib/vue/vue.js"></script>
+</head>
+<body>
+    <div id="app" class="mui-content">
+        <div class="container-login100">
+            <div class="wrap-login100 p-t-85 p-b-20">
+                <span class="login100-form-title p-b-70">
+                    <h5>进入临时群组</h5>
+                </span>
+                <div class="wrap-input100 validate-input m-t-85 m-b-35">
+                    <input class="input100" type="text" id="username" name="username" placeholder="昵称" v-model="username">
+                    <span class="focus-input100"></span>
+                </div>
+                <div class="container-login100-form-btn">
+                    <button v-on:click="enterTempgroup" class="login100-form-btn">进入</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+    new Vue({
+        data: {
+            username: localStorage.username,
+            groupid: '@groupinfo.GroupId',
+            tempgroupurl: "../TempGroup/Index?groupid="
+        },
+        created: function () {
+            this.tempgroupurl += this.groupid;
+        },
+        methods: {
+            enterTempgroup: function () {
+                var _seft = this;
+                if (_seft.username.length == 0) {
+                    alert("请输入昵称后进入");
+                    $("#username").focus();
+                    return;
+                }
+
+                if (localStorage.imuserid != null) {
+                    _seft.toTempGroup();
+                }
+                else {
+                    _seft.addCasual(function () {
+                        _seft.toTempGroup();
+                    });
+                }
+            },
+            toTempGroup: function() {
+                var _self = this;
+                var data = { groupId: _self.groupid, imUserId: localStorage.imuserid, nickName: _self.username, roleType: "0" };
+                $.ajax({
+                        type: "post",
+                        url: "http://imapi.localhost.com/api/usergroup/Add",
+                        data: data,
+                        dataType: "jsonp",
+                        success: function (res) {
+                            if (res.Status == 0) {
+                                location.href = _self.tempgroupurl;
+                            }
+                        }
+                    })
+            },
+            addCasual: function (successfun) {
+                var _self = this;
+                $.ajax({
+                    type: "post",
+                    url: "http://imapi.localhost.com/api/imuserinfo/addcasual",
+                    data: { imUserName: _self.username },
+                    dataType: "jsonp",
+                    success: function (res) {
+                        if (res.Status == 0) {
+                            localStorage.imuserid = res.Data.ImUserId;
+                            localStorage.username = res.Data.ImUserName;
+                            successfun();
+                        }
+                        else {
+                            alert(res.msg);
+                        }
+                    }
+                })
+            }
+        }
+    }).$mount('#app');
+
+    </script>
+</body>
+</html>

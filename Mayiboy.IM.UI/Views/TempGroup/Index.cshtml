@@ -1,0 +1,390 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>临时群组</title>
+    <link href="~/Content/css/tempgroupchat.css" rel="stylesheet" />
+    <link href="~/Content/css/tempgroupcss.css" rel="stylesheet" />
+    <script src="~/Content/lib/jquery/jQuery-2.2.0.min.js"></script>
+    <script src="~/Content/Scripts/common/flexible.js"></script>
+    <script src="~/Content/lib/vue/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <header class="header">
+            <a class="back" href="javascript:;" style="display: none;" v-on:click="hidegourpuserlist"></a>
+            <h5 class="tit">@ViewBag.GroupName</h5>
+            <div class="right" v-on:click="showgourpuserlist">
+                <i></i>
+            </div>
+        </header>
+        <div class="message">
+            <div v-for="message in messagelist" v-bind:class="{'send':message.mine==0,'show':message.mine==1}">
+                <div class="msg">
+                    <img :src="message.headimg" />
+                    <span class="name" v-if="message.mine==0">{{message.username}}</span>
+                    <p>
+                        <i class="msg_input"></i>
+                        {{message.content}}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <input id="content" type="text" v-model="message" />
+            <p v-on:click="sendmessage" style="background-color:#114F8E">发送</p>
+        </div>
+        <div class="userlist" style="display: none;">
+            <ul id="userlist">
+                <li v-for="user in userlist">
+                    <img :src="user.Headimg" />
+                    <span>{{user.UserName}}</span>
+                    <i v-bind:class="{'online' : user.Online==1,'offline':user.Online==0}"></i>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+
+    var websocketTimeId = null;
+    var wsheartbeattimeid = null;
+
+    new Vue({
+        data: {
+            groupid: '@ViewBag.GroupId',
+            imuserid: localStorage.imuserid,
+            websocketurl: "ws://imapi.localhost.com/api/",
+            ajaxurl: "http://imapi.localhost.com/api/",
+            userinfo: {
+                ImUserId: '',
+                UserName: '',
+                Headimg: ''
+            },
+            userlist: [],
+            messagelist: [],//{imuserid:'',headimg:'',datatype:'',content:'',mine:1}
+            lasttime: "",
+            message:""
+        },
+        created: function () {
+            var _self = this;
+            _self.checkLoginStatus();
+            _self.initPageData();
+            _self.connectWebsocket();
+        },
+        methods: {
+            checkLoginStatus: function () {
+                var _self = this;
+                if (this.imuserid == null) {
+                    location.href = "../tempgroup/login?groupid=" + this.groupid;
+                }
+                else {
+                    //检查用户是否存在，如果不存在，清除本地缓存重新设置昵称
+                    $.ajax({
+                        type: "post",
+                        url: "http://imapi.localhost.com/api/usergroup/queryusergroup",
+                        data: { imUserId: _self.imuserid, groupId: _self.groupid },
+                        dataType: "jsonp",
+                        success: function (res) {
+                            if (res.Status == 0) {
+
+                            }
+                            else {
+                                location.href = "../tempgroup/login?groupid=" + _self.groupid;
+                            }
+                        }
+                    })
+                }
+            },
+            initPageData: function () {
+                var _self = this;
+                $.ajax({
+                    type: "post",
+                    url: "http://imapi.localhost.com/api/usergroup/groupuserinfo",
+                    data: { groupid: _self.groupid, imuserid: _self.imuserid },
+                    dataType: "jsonp",
+                    success: function (res) {
+                        if (res.Status == 0) {
+                            _self.userinfo.ImUserId = res.Data.ImUserId;
+                            _self.userinfo.UserName = res.Data.NickName;
+                            _self.userinfo.Headimg = res.Data.UserHeadimg;
+                        }
+                    }
+                });
+
+                $.ajax({
+                    type: "post",
+                    url: "http://imapi.localhost.com/api/usergroup/queryalluser",
+                    data: { groupId: _self.groupid },
+                    dataType: "jsonp",
+                    success: function(res) {
+                        if (res.Status == 0) {
+                            $.each(res.Data, function(i, r) {
+                                    _self.userlist.push({
+                                        ImUserId: r.ImUserId,
+                                        UserName: r.ImUserName,
+                                        Headimg: r.UserHeadimg,
+                                        Online: r.Online //(0:离线，1：在线)
+                                    });
+                            })
+
+                            _self.initRecentmsg();
+                        }
+                    }
+                });
+            },
+            initRecentmsg: function () {
+                var _self = this;
+                _self.Ajaxp(_self.ajaxurl + "group/queryrecent", { groupId: _self.groupid }, function (res) {
+                    if (res.Status == 0) {
+                        var data = res.Data;
+
+                        $.each(data, function (i, r) {
+                            var headimg = "", username="";
+
+                            $.each(_self.userlist, function (i, userinfo) {
+                                if (userinfo.ImUserId.toLowerCase() == r.ImUserId.toLowerCase()) {
+                                    headimg = userinfo.Headimg;
+                                    username = userinfo.UserName;
+                                }
+                            });
+
+                            _self.messagelist.push({
+                                imuserid: r.ImUserId,
+                                username: username,
+                                datatype: r.MsgType,
+                                content: r.MsgContent,
+                                headimg: headimg,
+                                mine: (r.ImUserId.toLowerCase() == _self.imuserid.toLowerCase()?1:0)
+                            });
+                        })
+                    }
+                });
+            },
+            sendmessage: function () {
+                var _self = this;
+
+                if (_self.message == null || _self.message.length == 0) {
+                    alert("不能为空");
+                    return;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: _self.ajaxurl +"group/send",
+                    data: {
+                        groupId: _self.groupid,
+                        imUserId: _self.imuserid,
+                        msgType: "1",
+                        msgContent: _self.message,
+                        deviceType: "3",
+                        sourceType:"tempgroup",
+                    },
+                    dataType: "jsonp",
+                    beforeSend: function (request) {
+
+                    },
+                    success: function (data) {
+                        _self.message = "";
+                    },
+                    error: function (evt,a) {
+                        console.log(evt);
+                        console.log(a);
+                        console.log("send eror");
+                    }
+                });
+            },
+            connectWebsocket() {
+                var _self = this;
+                if (top != window) return;
+
+                _self.Ajaxp(_self.ajaxurl + "ws/connect", {}, function (data) {
+
+                    if (websocket) {
+                        websocket.close();
+                    }
+
+                    websocket = null;
+                    var url = _self.getWebSocketUrl()
+                    var websocket = new WebSocket(url);
+                    //打开
+                    websocket.onopen = function (e) {
+                        console.log("websocket connect");
+                        websocket.send(1);
+                    };
+                    //关闭
+                    websocket.onclose = function (evt) {
+                        console.log('websocket disconnect');
+                        console.log(evt);
+                        websocket = null;
+                        clearTimeout(websocketTimeId);
+                        websocketTimeId = setTimeout(function () {
+                            _self.connectWebsocket();
+                        }, 1000 * 2);
+                    }
+
+                    //消息
+                    websocket.onmessage = function (evt) {
+                        try {
+                            var res = JSON.parse(evt.data);
+                            //console.log(data);
+                            switch (res.newstype) {
+                                case 0:
+                                    //连接成功创建监控 处理同类型设备登录保留最后设备登录状态
+                                    wssid = res.data.sid;
+                                    _self.lasttime = res.data.lasttime;
+                                    _self.OnLine(res.data.imuserid, 1);
+                                    break;
+                                case 1://上线
+                                    console.log(res.data.imuserid + "上线");
+                                    _self.OnLine(res.data.imuserid, 1);
+                                    break;
+                                case 2://离线
+                                    console.log(res.data.imuserid + "离线");
+                                    _self.OnLine(res.data.imuserid, 0);
+                                    break;
+                                case 3://消息
+                                    _self.lasttime = res.data.lasttime;
+                                    _self.showMessage(res.data.imuserid, res.data.datatype, res.data.content);
+                                    break;
+                                case 4://心跳回执
+                                    clearTimeout(wsheartbeattimeid);
+                                    wsheartbeattimeid = setTimeout(function () {
+                                        if (websocket == null) {
+                                            clearTimeout(wsheartbeattimeid);
+                                            return;
+                                        }
+                                        websocket.send(1);
+                                    }, 1000 * 2);
+                                    break;
+                                case 5://新增用户
+                                    _self.AddUser(res.data.imuserid, res.data.username, res.data.headimg, res.data.online);
+                                    break;
+                                case 6://移除用户
+                                    _self.AddUser(res.data.imuserid);
+                                    break;
+                                default:
+                                    console.log("unfind message type");
+                                    break;
+                            }
+                        } catch (e) {
+                            console.log(e);
+                            return;
+                        }
+                    };
+                    //异常
+                    websocket.onerror = function (evt) {
+                        console.log('websocket error');
+                        console.log(evt);
+                        websocket = null;
+                        clearTimeout(websocketTimeId);
+                        websocketTimeId = setTimeout(function () {
+                            _self.connectWebsocket();
+                        }, 1000 * 5);
+                    };
+                }, function () {
+                    console.log("网络异常");
+                    websocket = null;
+                    clearTimeout(websocketTimeId);
+                    websocketTimeId = setTimeout(function () {
+                        _self.connectWebsocket();
+                    }, 1000 * 5);
+                });
+
+            },
+            AddUser: function (imuserid, username, headimg, online) {
+                var _self = this;
+                _self.userlist.push({
+                    ImUserId: imuserid,
+                    UserName: username,
+                    Headimg: headimg,
+                    Online: online //(0:离线，1：在线)
+                });
+            },
+            RomoveUser: function (imuserid) {
+
+            },
+            showMessage: function (imuserid, datatype, content) {
+                var _self = this;
+
+                var headimg = "",username="";
+
+                $.each(_self.userlist, function (i, userinfo) {
+                    if (userinfo.ImUserId.toLowerCase() == imuserid.toLowerCase()) {
+                        headimg = userinfo.Headimg;
+                        username = userinfo.UserName;
+                    }
+                });
+
+                _self.messagelist.push({
+                    imuserid: imuserid,
+                    username:username,
+                    datatype: datatype,
+                    content: content,
+                    headimg: headimg,
+                    mine: (imuserid.toLowerCase() == _self.imuserid.toLowerCase() ? 1 : 0)
+                });
+                //滑动
+                setTimeout(() => {
+                    $('html, body').animate({ scrollTop: $('.message').outerHeight() - window.innerHeight }, 200);
+                }, 200);
+            },
+            OnLine: function (imuserid, online) {
+                var _self = this;
+                $.each(_self.userlist, function (i, r) {
+                    if (r.ImUserId.toLowerCase() == imuserid.toLowerCase()) {
+                        r.Online = online;
+                        return;
+                    };
+                })
+            },
+            showgourpuserlist: function () {
+                $(".message,.footer,.right").hide();
+                $(".userlist,.back").show();
+            },
+            hidegourpuserlist: function () {
+                $(".message,.footer,.right").show();
+                $(".userlist,.back").hide();
+                $('html, body').animate({ scrollTop: $('.message').outerHeight() - window.innerHeight }, 200);
+            },
+            getWebSocketUrl: function() {
+                var _self = this;
+                var url = _self.websocketurl + "group/connect?1=1";
+                url += "&groupid=" + _self.groupid;
+                url += "&imuserid=" + _self.imuserid;
+                url += "&sourcetype=mobile";
+                url += "&lasttime=" + _self.lasttime;
+                return url;
+            },
+            Ajaxp: function (url, data, callback, errorcallback) {
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: data,
+                    dataType: "jsonp",
+                    beforeSend: function (request) {
+                    },
+                    success: function (data) {
+                        if (callback != null) {
+                            callback(data);
+                        }
+                    },
+                    error: function () {
+                        if (errorcallback != null) {
+                            errorcallback();
+                        }
+                    }
+                });
+            }
+        }
+    }).$mount('#app');
+    </script>
+</body>
+</html>

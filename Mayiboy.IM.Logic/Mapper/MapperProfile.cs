@@ -4,7 +4,7 @@ using AutoMapper;
 
 namespace Mayiboy.IM.Logic.Mapper
 {
-    public class MapperProfile: Profile
+    public class MapperProfile : Profile
     {
         public MapperProfile()
         {
@@ -36,6 +36,22 @@ namespace Mayiboy.IM.Logic.Mapper
                 return DateTime.Parse(e);
             });
             #endregion
+
+            //用户信息
+            //this.CreateMap<ImUserInfoPo, ImUserInfoDto>();
+            //this.CreateMap<ImUserInfoDto, ImUserInfoPo>();
+
+            ////用户组信息
+            //this.CreateMap<UserGroupPo, UserGroupDto>();
+            //this.CreateMap<UserGroupDto, UserGroupPo>();
+
+            ////组信息
+            //this.CreateMap<GroupInfoPo, GroupInfoDto>();
+            //this.CreateMap<GroupInfoDto, GroupInfoPo>();
+
+            ////通道信息
+            //this.CreateMap<ChannelMessagePo, ChannelMessageDto>();
+            //this.CreateMap<ChannelMessageDto, ChannelMessagePo>();
         }
     }
 }

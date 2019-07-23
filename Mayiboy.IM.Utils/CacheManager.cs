@@ -17,10 +17,22 @@ namespace Mayiboy.IM.Utils
         /// </summary>
         public static readonly RedisCache RedisDefault;
 
+        /// <summary>
+        /// 数据库二级缓存
+        /// </summary>
+        public static readonly IRedis RedisDb;
+
+        /// <summary>
+        /// Redis消息
+        /// </summary>
+        public static readonly IRedis RedisChat;
+
         static CacheManager()
         {
             RunTimeCache = (RunTimeCache)CacheFactory.GetCache("RunTime");
             RedisDefault = (RedisCache)CacheFactory.GetCache("RedisDefault");
+            RedisDb = CacheFactory.GetRedis("RedisDb");
+            RedisChat = CacheFactory.GetRedis("RedisChat");
         }
 
         /// <summary>

@@ -1,0 +1,8 @@
+﻿.msg img {border-radius: 6px;}
+.right i {width: 0.8rem;height: 0.8rem;display: inline-block;background-image: url(../../Content/images/defaultimg2.png);background-position: center center;background-size: 100% 100%;vertical-align: middle;}
+.userlist {background-color: white;padding: 1rem 0.3rem 1rem 0rem;list-style-type: none;}
+.userlist ul li {list-style-type: none;background-color: white;border-bottom: 1px solid #dfdfdf;padding: 10px;}
+.userlist ul li img {border-radius: 6px;width: 0.5rem;height: 0.5rem;}
+.userlist ul li span {margin-left:10px;}
+.online {width: 0.2rem;height: 0.2rem;display: inline-block;background-color: green;border-radius: 1rem;float: right;vertical-align: middle;}
+.offline {width: 0.2rem;height: 0.2rem;display: inline-block;background-color: red;border-radius: 1rem;float: right;vertical-align: middle;}

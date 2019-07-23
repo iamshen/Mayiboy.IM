@@ -30,6 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Framework.Mayiboy.Utility, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Framework.Mayiboy.Utility.1.0.9\lib\Framework.Mayiboy.Utility.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="SqlSugar, Version=4.6.4.7, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\sqlSugar.4.6.4.7\lib\SqlSugar.dll</HintPath>
       <Private>True</Private>
@@ -44,10 +50,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enum\NewsTypeEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mayiboy.IM.Utils\Mayiboy.IM.Utils.csproj">
+      <Project>{4e38f84c-fb97-4bdd-8852-44b7e3519ed3}</Project>
+      <Name>Mayiboy.IM.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
