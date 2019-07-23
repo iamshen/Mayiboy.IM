@@ -1,0 +1,118 @@
+﻿@using Mayiboy.IM.Admin.UI.Models
+
+@{
+    Layout = null;
+    List<MenuInfo> list = ViewBag.MenuList as List<MenuInfo>;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>IM后台管理</title>
+    <link href="~/Content/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Styles/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/Styles/index.css" rel="stylesheet" />
+    <link href="~/Content/Styles/skins/_all-skins.css" rel="stylesheet" />
+    <link href="~/Content/lib/layui/css/layui.css" rel="stylesheet" />
+</head>
+<body class="hold-transition skin-blue sidebar-mini" style="overflow: hidden;">
+    <div id="ajax-loader" style="cursor: progress; position: fixed; top: -50%; left: -50%; width: 200%; height: 200%; background: #fff; z-index: 10000; overflow: hidden;">
+        <img src="~/Content/Images/ajax-loader.gif" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: auto;" />
+    </div>
+    <div id="wrapper" class="wrapper">
+        <!--头部信息-->
+        <header class="main-header" style="z-index:1000">
+            <a href="javascript:;" target="_blank" class="logo">
+                <span class="logo-mini">IM</span>
+                <span class="logo-lg"><strong>IM后台管理</strong></span>
+            </a>
+            <nav class="navbar navbar-static-top">
+                <a class="sidebar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+            </nav>
+        </header>
+        <!--左边导航-->
+        <div class="main-sidebar">
+            <div class="sidebar">
+                <div class="user-panel" style="display: none">
+                    <div class="pull-left image">
+                        <img src="" class="img-circle" alt="User Image">
+                    </div>
+                    <div class="pull-left info">
+                        <p></p>
+                        <a><i class="fa fa-circle text-success"></i>在线</a>
+                    </div>
+                </div>
+                <form action="javascript:;" method="get" class="sidebar-form" style="display: none;">
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control" placeholder="Search...">
+                        <span class="input-group-btn">
+                            <a class="btn btn-flat"><i class="fa fa-search"></i></a>
+                        </span>
+                    </div>
+                </form>
+                <ul class="sidebar-menu" id="sidebar-menu">
+                    <li class="header">导航菜单</li>
+                    <li class="treeview active">
+                        <a href="javascript:;">
+                            <i class="fa fa-desktop"></i><span>系统管理</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a><ul class="treeview-menu menu-open" style="display: block;">
+                            @foreach (MenuInfo menu in list)
+                            {
+                                <li class="treeview">
+                                    <a class="menuItem" data-id="@menu.Id" data-menutype="0" data-href="@menu.Url" href="javascript:;">
+                                        <i class="fa fa-navicon"></i><span>@menu.Name</span>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!--中间内容-->
+        <div id="content-wrapper" class="content-wrapper">
+            <div class="content-tabs">
+                <button class="roll-nav roll-left tabLeft">
+                    <i class="fa fa-backward"></i>
+                </button>
+                <nav class="page-tabs menuTabs">
+                    <div class="page-tabs-content" style="margin-left: 0px;">
+                        <a href="javascript:;" class="menuTab active" data-id="@Url.Action("Page", "Home")">首页</a>
+                    </div>
+                </nav>
+                <button class="roll-nav roll-right tabRight" style="right: 41px;">
+                    <i class="fa fa-forward" style="margin-left: 3px;"></i>
+                </button>
+                <ul id="yjmenu" class="dropdown-menu dropdown-menu-right" style="display: none; width: 128px; top: 95%">
+                    <li><a class="tabReload" href="javascript:;">刷新当前</a></li>
+                    <li><a class="tabCloseCurrent" href="javascript:;">关闭当前</a></li>
+                    <li><a class="tabCloseAll" href="javascript:;">全部关闭</a></li>
+                    <li><a class="tabCloseOther" href="javascript:;">除此之外全部关闭</a></li>
+                </ul>
+                <button class="roll-nav roll-right fullscreen">
+                    <i class="fa fa-arrows-alt"></i>
+                </button>
+            </div>
+            <div class="content-iframe" style="overflow: hidden;">
+                <div class="mainContent" id="content-main" style="margin-bottom: 0px; padding: 0;">
+                    <iframe class="LRADMS_iframe" width="100%" height="100%" src="@Url.Action("Page", "Home")" frameborder="0" data-id="@Url.Action("Page", "Home")"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Content/lib/jquery/jQuery-2.2.0.min.js"></script>
+    <script src="~/Content/Scripts/common/jquery.cookie.js"></script>
+    <script type="text/javascript" src="~/Content/Scripts/common/rasall.js"></script>
+    <script src="~/Content/Scripts/common/jquery.extend.js?v=1"></script>
+    <script src="~/Content/lib/layui/layui.js"></script>
+    <script src="~/Content/lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Content/Scripts/app/index.js?v=003"></script>
+
+</body>
+</html>

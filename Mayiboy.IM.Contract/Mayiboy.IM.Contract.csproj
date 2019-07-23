@@ -30,6 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.6.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Framework.Mayiboy.Ioc, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Framework.Mayiboy.Ioc.1.0.3\lib\Framework.Mayiboy.Ioc.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -44,9 +50,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\Request.cs" />
+    <Compile Include="Base\PageRequest.cs" />
+    <Compile Include="Base\PageResponse.cs" />
+    <Compile Include="Base\Response.cs" />
+    <Compile Include="ChannelInfo\ChannelInfoDto.cs" />
+    <Compile Include="ChannelInfo\ChannelInfoParam.cs" />
+    <Compile Include="ChannelInfo\IChannelInfoService.cs" />
+    <Compile Include="ChannelMessage\ChannelMessageDto.cs" />
+    <Compile Include="ChannelMessage\ChannelMessageParam.cs" />
+    <Compile Include="ChannelMessage\IChannelMessageService.cs" />
     <Compile Include="GroupInfo\GroupInfoDto.cs" />
+    <Compile Include="GroupInfo\GroupInfoParam.cs" />
+    <Compile Include="GroupInfo\IGroupInfoService.cs" />
     <Compile Include="IBaseService.cs" />
+    <Compile Include="ImUserInfo\IImUserInfoService.cs" />
+    <Compile Include="ImUserInfo\ImUserInfoDto.cs" />
+    <Compile Include="ImUserInfo\ImUserInfoParam.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserGroup\IUserGroupService.cs" />
+    <Compile Include="UserGroup\UserGroupDto.cs" />
+    <Compile Include="UserGroup\UserGroupParam.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -78,6 +78,9 @@
     <Reference Include="ServiceStack.Text, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Framework.Mayiboy.Queue.1.0.2\lib\ServiceStack.Text.dll</HintPath>
     </Reference>
+    <Reference Include="SqlSugar, Version=4.6.4.9, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\sqlSugar.4.6.4.9\lib\SqlSugar.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -89,17 +92,44 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\EntityLogger.cs" />
+    <Compile Include="Impl\ChannelInfoService.cs" />
+    <Compile Include="Impl\ChannelMessageService.cs" />
+    <Compile Include="Impl\GroupInfoService.cs" />
+    <Compile Include="Impl\ImUserInfoService.cs" />
+    <Compile Include="Impl\UserGroupService.cs" />
     <Compile Include="Mapper\MapperProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Common\" />
-    <Folder Include="Impl\" />
     <Folder Include="Queue\" />
     <Folder Include="Task\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mayiboy.IM.ConstDefine\Mayiboy.IM.ConstDefine.csproj">
+      <Project>{a1030995-aed3-4e89-a278-7ae151430bb9}</Project>
+      <Name>Mayiboy.IM.ConstDefine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mayiboy.IM.Contract\Mayiboy.IM.Contract.csproj">
+      <Project>{cc823c88-6d37-4366-92cb-9e8a0532c9f2}</Project>
+      <Name>Mayiboy.IM.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mayiboy.IM.DataAccess\Mayiboy.IM.DataAccess.csproj">
+      <Project>{6009e8f9-5961-43ca-93d9-c0e1e1eef1e5}</Project>
+      <Name>Mayiboy.IM.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mayiboy.IM.Model\Mayiboy.IM.Model.csproj">
+      <Project>{576dc2af-3f8e-4c13-a407-a7c528b2ac23}</Project>
+      <Name>Mayiboy.IM.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mayiboy.IM.Utils\Mayiboy.IM.Utils.csproj">
+      <Project>{4e38f84c-fb97-4bdd-8852-44b7e3519ed3}</Project>
+      <Name>Mayiboy.IM.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

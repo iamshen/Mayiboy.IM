@@ -1,0 +1,643 @@
+﻿
+@{
+    ViewBag.Title = "用户组管理";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+}
+
+@section head_section{
+    <link href="~/Content/lib/jqueryeasyui/themes/gray/easyui.css" rel="stylesheet" />
+    <link href="~/Content/lib/jqueryeasyui/themes/icon.css" rel="stylesheet" />
+    <script src="~/Content/lib/jqueryeasyui/jquery.easyui.min.js"></script>
+    <script src="~/Content/lib/jqueryeasyui/plugins/jquery.treegrid.js"></script>
+    <script src="~/Content/lib/jqueryeasyui/plugins/jquery.tree.js"></script>
+    <script src="~/Content/lib/layui/lay/modules/formselects.js"></script>
+    <script src="~/Content/Scripts/common/jquery.qrcode.min.js"></script>
+}
+
+@*面包屑*@
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb" style="visibility: visible;">
+        <a lay-href="">主页</a><span lay-separator="">/</span>
+        <a><cite>组件</cite></a><span lay-separator="">/</span>
+        <a><cite>数据表格</cite></a><span lay-separator="">/</span>
+        <a><cite>数据表格的重载</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    @ViewBag.Title
+                </div>
+                <div class="layui-card-body" style="margin: 0px; padding: 0px;">
+                    <div class="layui-card" style="margin: 0px;">
+                        <div class="layui-card-body" style="padding: 0px;">
+                            <div class="layui-btn-container" style="float: left; padding: 5px;">
+                                <div class="layui-btn-group">
+                                    <label class="mayiboy-lable">组名:</label>
+                                    <input id="groupname" class="mayiboy-input" placeholder="组名" />
+                                </div>
+                                <div class="layui-btn-group">
+                                    <button id="btnquery" class="layui-btn">查询</button>
+                                </div>
+                            </div>
+
+                            <div class="layui-btn-container" style="padding: 5px; float: right;">
+                                <div class="layui-btn-group">
+                                    <button id="btnadd" class="layui-btn">新增</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <table id="dttable" style="width: auto;" lay-filter="table-operate" data-url="@Url.Action("Query", "GroupInfo")" data-delurl="@Url.Action("Del", "GroupInfo")"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*编辑组信息*@
+<div id="editgroupinfo" style="display: none;" data-url="@Url.Action("Save", "GroupInfo")">
+    <form class="layui-form" style="padding: 30px;">
+        <input id="txtid" type="hidden" value="00000000-0000-0000-0000-000000000000" />
+        <div class="layui-form-item">
+            <label class="layui-form-label">组名：</label>
+            <div class="layui-input-block">
+                <input id="editgroupname" type="text" name="title" required lay-verify="required" placeholder="组名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">人数上限：</label>
+            <div class="layui-input-block">
+                <input id="maxcapacity" type="number" name="title" required lay-verify="required" placeholder="人数上限" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户类型：</label>
+            <div class="layui-input-block">
+                <div id="usertype" style="width:330px;"></div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">消息持久：</label>
+            <div class="layui-input-block">
+                <select id="storageStatus">
+                    <option value="0">否</option>
+                    <option value="1">是</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注：</label>
+            <div class="layui-input-block">
+                <textarea class="layui-textarea " name="content" lay-verify="content" id="remark" style="resize: none;height:80px;"></textarea>
+            </div>
+        </div>
+    </form>
+</div>
+
+@*群组用户列表*@
+<div id="queryuser" style="display: none">
+    <input id="txtgroupId" type="hidden" value="00000000-0000-0000-0000-000000000000" />
+    <div class="layui-btn-container" style="padding: 5px;">
+        <div class="layui-btn-group">
+            <label class="mayiboy-lable">昵称:</label>
+            <input id="nickname" class="mayiboy-input" placeholder="昵称" />
+        </div>
+        <div class="layui-btn-group">
+            <button id="btnquerygroupuser" class="layui-btn">查询</button>
+        </div>
+    </div>
+    <table id="groupuserdttable" style="width: auto;" lay-filter="table-operate2" data-url="@Url.Action("QueryGroupUser", "GroupInfo")" data-delurl="@Url.Action("DelGroupUser", "GroupInfo")"></table>
+</div>
+
+@*编辑用户信息*@
+<div id="edituserinfo" style="display: none;" data-url="@Url.Action("SaveUserGroup", "GroupInfo")">
+    <form class="layui-form" style="padding: 30px;">
+        <input id="txtusergroupId" type="hidden" value="00000000-0000-0000-0000-000000000000" />
+        <div class="layui-form-item">
+            <label class="layui-form-label">角色类型：</label>
+            <div class="layui-input-block">
+                <select id="roletype" class="mayiboy-input" style="width: 150px;">
+                    <option value="">请选择</option>
+                    <option value="0">普通用户</option>
+                    <option value="1">组长</option>
+                    <option value="2">管理员</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">昵称：</label>
+            <div class="layui-input-block">
+                <input id="editnickname" type="text" name="title" required lay-verify="required" placeholder="昵称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </form>
+</div>
+@*二维码*@
+<div id="scancode" style="display: none;padding:20px;">
+
+</div>
+
+@section foot_section{
+    <script type="text/javascript">
+        $(function () {
+
+            var editgroupinfo;
+            var utypeselectM;
+            var edituserinfo;
+            var form;
+
+            var thisPage = {
+                Controls: {
+                    GroupInfoTable: null,
+                    GroupUserTable: null
+                },
+                Init: function () {
+                    thisPage.InitGroupInfoTable();
+                    thisPage.InitGroupUserTable();
+
+                    $("#btnquery").click(function () {
+                        thisPage.QueryGroupInfo();
+                    });
+
+                    $("#btnadd").click(function () {
+                        thisPage.ShowEditPage();
+                    });
+
+                    $("#btnquerygroupuser").click(function () {
+                        thisPage.QueryGroupUser();
+                    });
+
+                    layui.use(["form", "selectM"], function () {
+                        form = layui.form;
+                        //各种基于事件的操作，下面会有进一步介绍
+                        form.render("select"); //更新全部
+
+                        utypeselectM = layui.selectM({
+                            //元素容器【必填】
+                            elem: '#usertype',
+                            data: [
+                                { "id": 1, "name": "内部" },
+                                { "id": 2, "name": "会员" },
+                                { "id": 3, "name": "第三方" },
+                                { "id": 4, "name": "临时" }
+                            ],
+                            max: 4,
+                            tips: "请选择",
+                            verify: 'required'
+                        });
+                    });
+                },
+                InitGroupInfoTable: function () {
+                    layui.use("table",
+                        function () {
+                            var table = layui.table;
+
+                            thisPage.Controls.GroupInfoTable = table.render({
+                                elem: '#dttable',
+                                url: $("#dttable").data("url"), //数据接口
+                                page: true, //开启分页
+                                limit: 20,
+                                even: true, //各行变色
+                                cols: [
+                                    [
+                                        { field: 'id', title: '序号', type: "numbers", width: 60 },
+                                        {
+                                            field: 'GroupPicture',
+                                            title: '组头像',
+                                            width: 60,
+                                            templet: function (row) {
+
+                                                if (row.GroupPicture.length == 0) {
+                                                    row.GroupPicture = "http://static.nuoeu.com/default/groupheadimg.jpg";
+                                                }
+                                                var html = "<img style='height:25px;width:25px;' src='" + row.GroupPicture + "'></img>";
+                                                return html;
+                                            }
+                                        },
+                                        { field: 'GroupName', title: '组名', width: 150 },
+                                        { field: 'GroupMaxCapacity', title: '人数上限', width: 150 },
+                                        {
+                                            field: 'GroupUserTypes',
+                                            title: '用户类型',
+                                            width: 200,
+                                            templet: function (row) {
+                                                var html = "";
+                                                $.each(row.GroupUserTypes.split(","),
+                                                    function (i, r) {
+                                                        switch (r) {
+                                                            case "1":
+                                                                html += '<span class="layui-badge layui-bg-cyan2" style="margin-right: 5px;">' + "内部" + '</span>';
+                                                                break;
+                                                            case "2":
+                                                                html += '<span class="layui-badge layui-bg-cyan2" style="margin-right: 5px;">' + "会员" + '</span>';
+                                                                break;
+                                                            case "3":
+                                                                html += '<span class="layui-badge layui-bg-cyan2" style="margin-right: 5px;">' + "第三方" + '</span>';
+                                                                break;
+                                                            case "4":
+                                                                html += '<span class="layui-badge layui-bg-cyan2" style="margin-right: 5px;">' + "临时" + '</span>';
+                                                                break;
+                                                            default:
+                                                                html += '<span class="layui-badge layui-bg-cyan2" style="margin-right: 5px;">' + "未知" + '</span>';
+                                                                break;
+                                                        }
+                                                    });
+                                                return html;
+                                            }
+                                        },
+                                        {
+                                            field: 'StorageStatus', title: "消息持久", with: 100, templet: function (row) {
+                                                switch (row.StorageStatus) {
+                                                    case 0: return "否";
+                                                    case 1: return "是";
+                                                    default: return "未知";
+                                                }
+
+                                            }
+                                        },
+                                        {
+                                            field: 'CreateTime',
+                                            title: '新增时间',
+                                            width: 180,
+                                            templet: function (row) {
+                                                return $.Extend_formatDateTime(row.CreateTime);
+                                            }
+                                        },
+                                        {
+                                            field: 'UpdateTime',
+                                            title: '更新时间',
+                                            width: 180,
+                                            templet: function (row) {
+                                                return $.Extend_formatDateTime(row.CreateTime);
+                                            }
+                                        },
+                                        { field: 'Remark', title: "备注", width: 250 },
+                                        {
+                                            field: 'look',
+                                            fixed: 'right',
+                                            title: '操作',
+                                            width: 280,
+                                            templet: function (row) {
+                                                var html = "";
+                                                html += '<a href="javascript:;" class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>';
+                                                html += '<a href="javascript:;" class="layui-btn layui-btn-xs" lay-event="queryuser">查看成员</a>';
+                                                html += '<a href="javascript:;" class="layui-btn layui-btn-xs" lay-event="showcode">二维码进入</a>';
+                                                html += '<a href="javascript:;" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>';
+                                                return html;
+                                            }
+                                        }
+                                    ]
+                                ],
+                                done: function (res, curr, count) {
+
+                                }
+                            });
+
+                            //监听工具条
+                            table.on('tool(table-operate)',
+                                function (obj) {
+                                    var data = obj.data; //获得当前行数据
+                                    var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                                    var tr = obj.tr; //获得当前行 tr 的DOM对象
+
+                                    switch (obj.event) {
+                                        case "edit":
+                                            thisPage.ShowEditPage(data);
+                                            break;
+                                        case "queryuser":
+                                            thisPage.QueryUser(data);
+                                            break;
+                                        case "showcode":
+                                            thisPage.ShowCode(data);
+                                            break;
+                                        case "del":
+                                            layer.confirm('真的删除行吗？',
+                                                function (index) {
+                                                    thisPage.Del(data, index);
+                                                });
+                                            break;
+                                        default:
+                                    }
+                                });
+                        });
+                },
+                //显示二维码
+                ShowCode: function (data) {
+                    $('#scancode').html("");
+                    var url = "http://im.localhost.com/tempgroup/index?groupid=" + data.GroupId;
+                    layer.open({
+                          type: 1,
+                          shade: false,
+                          title: false, //不显示标题
+                          content: $('#scancode').qrcode(url), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+                          cancel: function () { }
+                     });
+                },
+                ShowEditPage: function (data) {
+                    var title = "";
+                    if (data == null) {
+                        $("#txtid").val("00000000-0000-0000-0000-000000000000");
+                        $("#editgroupname").val("");
+                        $("#maxcapacity").val(100);
+                        $("#usertype").val("-1");
+                        utypeselectM.set([]);
+                        $("#remark").val("");
+                        $("#storageStatus").val("0");
+                        title = "新增组信息";
+                    } else {
+                        $("#txtid").val(data.GroupId);
+                        $("#editgroupname").val(data.GroupName);
+                        $("#maxcapacity").val(data.GroupMaxCapacity);
+                        utypeselectM.set(data.GroupUserTypes.split(','));
+                        $("#remark").val(data.Remark);
+                        $("#storageStatus").val(data.StorageStatus);
+                        title = "编辑组信息";
+                    }
+
+                    form.render();
+                    editgroupinfo = layer.open({
+                        title: title,
+                        resize: false,
+                        type: 1,
+                        area: ['500px', '500px'],
+                        offset: '20px',
+                        content: $('#editgroupinfo'), //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                        btn: ["保存", "取消"],
+                        btn1: function () {
+                            thisPage.Save();
+                        },
+                        btn2: function () {
+                            // alert("取消");
+                        },
+                        cancel: function () {
+                            // alert("退出");
+                        }
+                    });
+                },
+                //保存
+                Save: function () {
+                    var isb = layer.IsValidation("#editgroupinfo");
+
+                    if (isb == null) {
+                        $.ajax({
+                            type: "post",
+                            url: $("#editgroupinfo").data("url"),
+                            data: {
+                                groupId: $("#txtid").val(),
+                                groupName: $("#editgroupname").val(),
+                                groupMaxCapacity: $("#maxcapacity").val(),
+                                groupPicture: "",
+                                groupUserTypes: utypeselectM.values.toString(),
+                                storageStatus: $("#storageStatus").val(),
+                                remark: $("#remark").val()
+                            },
+                            success: function (res) {
+                                if (res.status == 0) {
+                                    layer.msg("保存成功");
+                                    thisPage.Controls.GroupInfoTable.reload();
+                                    layer.close(editgroupinfo);
+                                } else {
+                                    layer.msg(res.msg);
+                                }
+                            }
+                        });
+                    }
+                },
+                //查询用户
+                QueryUser: function (data) {
+
+                    var groupuserinfo = layer.open({
+                        title: "用户列表",
+                        resize: false,
+                        type: 1,
+                        offset: '20px',
+                        content: $('#queryuser'), //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                        //btn: ["取消"],
+                        btn1: function () {
+
+                        },
+                        btn2: function () {
+                            // alert("取消");
+                        },
+                        cancel: function () {
+                            // alert("退出");
+                        }
+                    });
+                    $("#txtgroupId").val(data.GroupId);
+                    thisPage.QueryGroupUser();
+                    //最大化
+                    layer.full(groupuserinfo);
+                },
+                InitGroupUserTable: function (data) {
+                    layui.use("table", function () {
+                        var table = layui.table;
+                        thisPage.Controls.GroupUserTable = table.render({
+                            elem: '#groupuserdttable',
+                            url: $("#groupuserdttable").data("url"), //数据接口
+                            page: true, //开启分页
+                            limit: 20,
+                            even: true, //各行变色
+                            cols: [[
+                                { field: 'id', title: '序号', type: "numbers", width: 60 },
+                                {
+                                    field: 'UserHeadimg',
+                                    title: '头像',
+                                    width: 60,
+                                    templet: function (row) {
+                                        var html = "<img style='height:25px;width:25px;' src='" + row.UserHeadimg + "'></img>";
+                                        return html;
+                                    }
+                                },
+                                { field: 'ImUserName', title: '用户名', width: 150 },
+                                { field: 'UserId', title: '用户标识', width: 350 },
+                                {
+                                    field: 'RoleType',
+                                    title: '角色类型',
+                                    width: 120,
+                                    templet: function (row) {
+                                        switch (row.RoleType) {
+                                            case 0:
+                                                return '<span class="layui-badge layui-bg-gray" style="margin-right: 5px;">普通用户</span>';
+                                            case 1:
+                                                return '<span class="layui-badge layui-bg-gray" style="margin-right: 5px;">组长</span>';
+                                            case 2:
+                                                return '<span class="layui-badge layui-bg-gray" style="margin-right: 5px;">管理员</span>';
+                                            default:
+                                                return '<span class="layui-badge layui-bg-gray" style="margin-right: 5px;">未知</span>';
+                                        }
+                                    }
+                                },
+                                {
+                                    field: 'Gender',
+                                    title: '性别',
+                                    width: 80,
+                                    templet: function (row) {
+                                        switch (row.Gender) {
+                                            case 0:
+                                                return "女";
+                                            case 1:
+                                                return "男";
+                                            default:
+                                                return "保密";
+                                        }
+
+                                    }
+                                },
+                                { field: 'Remark', title: "备注" },
+                                {
+                                    field: 'look',
+                                    fixed: 'right',
+                                    title: '操作',
+                                    width: 200,
+                                    templet: function (row) {
+                                        var html = "";
+                                        html += '<a href="javascript:;" class="layui-btn layui-btn-xs" lay-event="editgroupuser">编辑</a>';
+                                        html += '<a href="javascript:;" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delgroupuser">删除</a>';
+                                        return html;
+                                    }
+                                }
+                            ]],
+                            done: function (res, curr, count) {
+
+                            }
+                        });
+
+                        //监听工具条
+                        table.on('tool(table-operate2)', function (obj) {
+                            var data = obj.data; //获得当前行数据
+                            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                            var tr = obj.tr; //获得当前行 tr 的DOM对象
+
+                            switch (obj.event) {
+                                case "editgroupuser":
+                                    thisPage.ShowEditGroupUserPage(data);
+                                    break;
+                                case "delgroupuser":
+                                    layer.confirm('真的删除行吗？', function (index) {
+                                        thisPage.DelGroupUser(data, index);
+                                    });
+                                    break;
+                                default:
+                            }
+                        });
+                    });
+                },
+                DelGroupUser: function (row, index) {
+                    $.ajax({
+                        type: "get",
+                        url: $("#groupuserdttable").data("delurl"),
+                        data: { userGroupId: row.UserGroupId },
+                        success: function (res) {
+                            if (res.status == 0) {
+                                thisPage.Controls.GroupUserTable.reload();
+                                layer.close(index);
+                            } else {
+                                layer.msg(res.msg);
+                            }
+                        }
+                    });
+                },
+                QueryGroupUser: function () {
+                    thisPage.Controls.GroupUserTable.reload({
+                        where: {
+                            groupId: $("#txtgroupId").val(),
+                            imUserName: $("#nickname").val()
+                        },
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                    });
+                },
+                ShowEditGroupUserPage: function (data) {
+                    $("#txtusergroupId").val("00000000-0000-0000-0000-000000000000");
+
+                    $("#editnickname").val("");
+                    $("#roletype").val("");
+                    $("#txtusergroupId").val(data.UserGroupId);
+                    $("#editnickname").val(data.ImUserName);
+                    $("#roletype").val(data.RoleType);
+
+                    form.render();
+
+                    edituserinfo = layer.open({
+                        title: "编辑",
+                        resize: false,
+                        type: 1,
+                        area: ['400px', '400px'],
+                        offset: '20px',
+                        content: $('#edituserinfo'), //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                        btn: ["保存", "取消"],
+                        btn1: function () {
+                            thisPage.SaveUserInfo();
+                        },
+                        btn2: function () {
+                            // alert("取消");
+                            $("#txtusergroupId").val("00000000-0000-0000-0000-000000000000");
+                        },
+                        cancel: function () {
+                            // alert("退出");
+                            $("#txtusergroupId").val("00000000-0000-0000-0000-000000000000");
+                        }
+                    });
+                },
+                SaveUserInfo: function () {
+                    var isb = layer.IsValidation("#edituserinfo");
+                    if (isb == null) {
+                        $.ajax({
+                            type: "post",
+                            url: $("#edituserinfo").data("url"),
+                            data: {
+                                userGroupId: $("#txtusergroupId").val(),
+                                nickName: $("#editnickname").val(),
+                                roleType: $("#roletype").val()
+                            },
+                            success: function (res) {
+                                if (res.status == 0) {
+                                    layer.msg("保存成功");
+                                    thisPage.Controls.GroupUserTable.reload();
+                                    layer.close(edituserinfo);
+                                }
+                                else {
+                                    layer.msg(res.msg);
+                                }
+                            }
+                        });
+                    }
+                },
+                //删除
+                Del: function (row, index) {
+                    $.ajax({
+                        type: "get",
+                        url: $("#dttable").data("delurl"),
+                        data: { groupId: row.GroupId },
+                        success: function (res) {
+                            if (res.status == 0) {
+                                thisPage.Controls.GroupInfoTable.reload();
+                                layer.close(index);
+                            } else {
+                                layer.msg(res.msg);
+                            }
+                        }
+                    });
+                },
+                //查询
+                QueryGroupInfo: function () {
+                    thisPage.Controls.GroupInfoTable.reload({
+                        where: {
+                            groupname: $("#groupname").val()
+                        },
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                    });
+                }
+            }
+
+            thisPage.Init();
+        })
+    </script>
+}

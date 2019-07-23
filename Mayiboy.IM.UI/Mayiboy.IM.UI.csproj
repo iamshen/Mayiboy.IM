@@ -267,6 +267,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\FriendChatController.cs" />
+    <Compile Include="Controllers\GroupChatController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Controllers\TempGroupController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -298,6 +303,12 @@
     <Content Include="Content\lib\layui\font\iconfont.eot" />
     <Content Include="Content\lib\layui\font\iconfont.ttf" />
     <Content Include="Content\lib\layui\font\iconfont.woff" />
+    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\FriendChat\Index.cshtml" />
+    <Content Include="Views\GroupChat\Index.cshtml" />
+    <Content Include="Views\Page\Index.cshtml" />
+    <Content Include="Views\Page\Page404.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

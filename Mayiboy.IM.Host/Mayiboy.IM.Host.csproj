@@ -156,6 +156,21 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ChannelMessageVo.cs" />
+    <Compile Include="Models\LoginInfoModel.cs" />
+    <Compile Include="Models\Request\AddCasualRequest.cs" />
+    <Compile Include="Models\Request\AddUserGroupRequest.cs" />
+    <Compile Include="Models\Request\GetGroupInfoRequest.cs" />
+    <Compile Include="Models\Request\GroupUserInfoRequest.cs" />
+    <Compile Include="Models\Request\InfoRequest.cs" />
+    <Compile Include="Models\Request\QueryRecentRequest.cs" />
+    <Compile Include="Models\Request\SendGroupMessageRequest.cs" />
+    <Compile Include="Models\Request\UserInfoAddRequest.cs" />
+    <Compile Include="Models\Response\ApiResult.cs" />
+    <Compile Include="Models\Response\BaseResponse.cs" />
+    <Compile Include="Models\SendMessageRequest.cs" />
+    <Compile Include="Models\UserGroupRequest.cs" />
+    <Compile Include="Models\UserInfoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -172,7 +187,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mayiboy.IM.Contract\Mayiboy.IM.Contract.csproj">

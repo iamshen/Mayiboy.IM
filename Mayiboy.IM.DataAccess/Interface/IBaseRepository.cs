@@ -76,6 +76,17 @@ namespace Mayiboy.IM.DataAccess.Interface
         List<T> FindTopNum<T>(Expression<Func<T, bool>> expression, int topnum = 1) where T : class, new();
 
         /// <summary>
+        /// 取前n条
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="expression">查询条件</param>
+        /// <param name="orderexpression">排序条件</param>
+        /// <param name="type">排序类型</param>
+        /// <param name="topnum">n条，默认1条</param>
+        /// <returns></returns>
+        List<T> FindTopNum<T>(Expression<Func<T, bool>> expression, Expression<Func<T, object>> orderexpression, OrderByType type = OrderByType.Asc, int topnum = 1) where T : class, new();
+
+        /// <summary>
         /// 根据主键查询
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -156,6 +167,14 @@ namespace Mayiboy.IM.DataAccess.Interface
         bool Any<T>(Expression<Func<T, bool>> expression) where T : class, new();
 
         /// <summary>
+        /// 合计
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        int Count<T>(Expression<Func<T, bool>> expression) where T : class, new();
+
+        /// <summary>
         /// 分页查询
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -168,7 +187,6 @@ namespace Mayiboy.IM.DataAccess.Interface
         /// <returns></returns>
         List<T> FindPage<T>(Expression<Func<T, bool>> expression, Expression<Func<T, object>> orderexpression,
             int pageIndex, int pageSize, ref int totalNumber, OrderByType orderbytype = OrderByType.Asc) where T : class, new();
-
 
         #endregion
 

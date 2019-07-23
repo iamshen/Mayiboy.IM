@@ -2,6 +2,9 @@
 
 namespace Mayiboy.IM.Contract
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class GroupInfoDto
     {
         /// <summary>
@@ -63,5 +66,6 @@ namespace Mayiboy.IM.Contract
         /// 用户组标识
         /// </summary>
         public Guid? UserGroupId { get; set; }
+
     }
 }

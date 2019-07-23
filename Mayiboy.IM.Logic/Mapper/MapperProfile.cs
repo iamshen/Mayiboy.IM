@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using AutoMapper;
+using Mayiboy.IM.Contract;
+using Mayiboy.IM.Model.Po;
 
 namespace Mayiboy.IM.Logic.Mapper
 {
@@ -38,20 +40,20 @@ namespace Mayiboy.IM.Logic.Mapper
             #endregion
 
             //用户信息
-            //this.CreateMap<ImUserInfoPo, ImUserInfoDto>();
-            //this.CreateMap<ImUserInfoDto, ImUserInfoPo>();
+            this.CreateMap<ImUserInfoPo, ImUserInfoDto>();
+            this.CreateMap<ImUserInfoDto, ImUserInfoPo>();
 
-            ////用户组信息
-            //this.CreateMap<UserGroupPo, UserGroupDto>();
-            //this.CreateMap<UserGroupDto, UserGroupPo>();
+            //用户组信息
+            this.CreateMap<UserGroupPo, UserGroupDto>();
+            this.CreateMap<UserGroupDto, UserGroupPo>();
 
-            ////组信息
-            //this.CreateMap<GroupInfoPo, GroupInfoDto>();
-            //this.CreateMap<GroupInfoDto, GroupInfoPo>();
+            //组信息
+            this.CreateMap<GroupInfoPo, GroupInfoDto>();
+            this.CreateMap<GroupInfoDto, GroupInfoPo>();
 
-            ////通道信息
-            //this.CreateMap<ChannelMessagePo, ChannelMessageDto>();
-            //this.CreateMap<ChannelMessageDto, ChannelMessagePo>();
+            //通道信息
+            this.CreateMap<ChannelMessagePo, ChannelMessageDto>();
+            this.CreateMap<ChannelMessageDto, ChannelMessagePo>();
         }
     }
 }

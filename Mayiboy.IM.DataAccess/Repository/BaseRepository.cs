@@ -8,7 +8,7 @@ using SqlSugar;
 namespace Mayiboy.IM.DataAccess.Repository
 {
     /// <summary>
-    /// 基础仓储
+    /// 
     /// </summary>
     public class BaseRepository : IBaseRepository
     {
@@ -112,6 +112,20 @@ namespace Mayiboy.IM.DataAccess.Repository
         public List<T> FindTopNum<T>(Expression<Func<T, bool>> expression, int topnum = 1) where T : class, new()
         {
             return CurrentDbContext.Queryable<T>().With(SqlWith.NoLock).Where(expression).Take(topnum).ToList();
+        }
+
+        /// <summary>
+        /// 取前n条
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="expression">查询条件</param>
+        /// <param name="orderexpression">排序条件</param>
+        /// <param name="type">排序类型</param>
+        /// <param name="topnum">n条，默认1条</param>
+        /// <returns></returns>
+        public List<T> FindTopNum<T>(Expression<Func<T, bool>> expression, Expression<Func<T, object>> orderexpression, OrderByType type = OrderByType.Asc, int topnum = 1) where T : class, new()
+        {
+            return CurrentDbContext.Queryable<T>().With(SqlWith.NoLock).Where(expression).OrderBy(orderexpression, type).Take(topnum).ToList();
         }
 
         /// <summary>
@@ -222,6 +236,17 @@ namespace Mayiboy.IM.DataAccess.Repository
         public bool Any<T>(Expression<Func<T, bool>> expression) where T : class, new()
         {
             return CurrentDbContext.Queryable<T>().With(SqlWith.NoLock).Any(expression);
+        }
+
+        /// <summary>
+        /// 合计
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+	    public int Count<T>(Expression<Func<T, bool>> expression) where T : class, new()
+        {
+            return CurrentDbContext.Queryable<T>().With(SqlWith.NoLock).Count(expression);
         }
 
         /// <summary>

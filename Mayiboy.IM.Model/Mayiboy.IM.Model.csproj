@@ -51,6 +51,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enum\NewsTypeEnum.cs" />
+    <Compile Include="Po\ChannelInfoPo.cs" />
+    <Compile Include="Po\ChannelMessagePo.cs" />
+    <Compile Include="Po\FriendGroupPo.cs" />
+    <Compile Include="Po\GroupInfoPo.cs" />
+    <Compile Include="Po\ImUserInfoPo.cs" />
+    <Compile Include="Po\ImUserRelationPo.cs" />
+    <Compile Include="Po\UserGroupPo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

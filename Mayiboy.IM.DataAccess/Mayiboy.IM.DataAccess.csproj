@@ -46,9 +46,8 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="SqlSugar, Version=4.6.4.7, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\sqlSugar.4.6.4.7\lib\SqlSugar.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="SqlSugar, Version=4.6.4.9, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\sqlSugar.4.6.4.9\lib\SqlSugar.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -61,8 +60,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interface\IBaseRepository.cs" />
+    <Compile Include="Interface\IChannelInfoRepository.cs" />
+    <Compile Include="Interface\IChannelMessageRepository.cs" />
+    <Compile Include="Interface\IGroupInfoRepository.cs" />
+    <Compile Include="Interface\IImUserInfoRepository.cs" />
+    <Compile Include="Interface\IUserGroupRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\BaseRepository.cs" />
+    <Compile Include="Repository\ChannelInfoRepository.cs" />
+    <Compile Include="Repository\ChannelMessageRepository.cs" />
+    <Compile Include="Repository\GroupInfoRepository.cs" />
+    <Compile Include="Repository\ImUserInfoRepository.cs" />
+    <Compile Include="Repository\UserGroupRepository.cs" />
     <Compile Include="SqlServerDbContext.cs" />
   </ItemGroup>
   <ItemGroup />
@@ -71,6 +80,18 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Mayiboy.IM.ConstDefine\Mayiboy.IM.ConstDefine.csproj">
+      <Project>{a1030995-aed3-4e89-a278-7ae151430bb9}</Project>
+      <Name>Mayiboy.IM.ConstDefine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mayiboy.IM.Contract\Mayiboy.IM.Contract.csproj">
+      <Project>{cc823c88-6d37-4366-92cb-9e8a0532c9f2}</Project>
+      <Name>Mayiboy.IM.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mayiboy.IM.Model\Mayiboy.IM.Model.csproj">
+      <Project>{576dc2af-3f8e-4c13-a407-a7c528b2ac23}</Project>
+      <Name>Mayiboy.IM.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mayiboy.IM.Utils\Mayiboy.IM.Utils.csproj">
       <Project>{4e38f84c-fb97-4bdd-8852-44b7e3519ed3}</Project>
       <Name>Mayiboy.IM.Utils</Name>

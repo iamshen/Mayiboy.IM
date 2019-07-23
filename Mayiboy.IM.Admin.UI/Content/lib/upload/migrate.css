@@ -1,0 +1,67 @@
+﻿.upcontainer {
+            border: 1px solid #d7d7d7;
+            height: 100%;
+            overflow: hidden;
+            padding:10px;
+        }
+
+        .imgarea li {
+            width: 150px;
+            height: 100px;
+            float: left;
+            margin-left: 15px;
+            margin-bottom: 15px;
+            list-style-type: none;
+            background: #f8f8f8;
+            border: 1px solid #d7d7d7;
+            overflow: hidden;
+
+        }
+
+        .imgarea li>img {
+            width: 150px;
+            height: 100px;
+            cursor: pointer;
+            position: absolute;
+        }
+
+        .delimg {
+            opacity: 0.6;
+            position: initial;
+            float: right;
+            cursor: pointer;
+            overflow: hidden;
+            border-top: 15px solid #333;
+            border-right: 15px solid #333;
+            border-bottom: 15px solid transparent;
+            border-left: 15px solid transparent;
+
+            display: none;
+        }
+
+        .close {
+            position: absolute;
+            float: right;
+            margin-top: -6px;
+        }
+
+        .close::before,
+        .close::after {
+            content: '';
+            width: 12px;
+            height: 2px;
+            background: #FFF;
+            display: block;
+        }
+
+        .close::before {
+            transform: rotate(45deg);
+        }
+
+        .close::after {
+            transform: translateY(-2px) rotate(-45deg);
+        }
+
+        .imgarea li:hover div {
+            display: block;
+        }
