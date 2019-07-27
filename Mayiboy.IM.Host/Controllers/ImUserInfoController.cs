@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -111,13 +112,15 @@ namespace Mayiboy.IM.Host.Controllers
             dto.ImUserName = imUserName;
 
             #region 设置默认头像
-            //var bytes = HeadimgHelper.Generate(imUserName.Substring(0, 1));
-            //var filename = Guid.NewGuid().ToString() + ".jpg";
-            //var fileres = UploadFile.Push(bytes, "imheadimg", filename, filename);
-            //if (fileres.Status == "success")
-            //{
-            //    dto.UserHeadimg = fileres.Url;
-            //}
+            var bytes = HeadimgHelper.Generate(imUserName.Substring(0, 1));
+            var filename = Guid.NewGuid().ToString("N") + ".jpg";
+            var fullfilepath =System.Web.HttpContext.Current.Server.MapPath(ConfigurationManager.AppSettings["FileRootPath"])+ filename;
+
+            UploadFile.SaveFile(bytes, fullfilepath, out var msg);
+            if (string.IsNullOrEmpty(msg))
+            {
+                dto.UserHeadimg = ConfigurationManager.AppSettings["HttpFileUrl"] + filename;
+            }
             #endregion
 
             dto.UserType = 4;

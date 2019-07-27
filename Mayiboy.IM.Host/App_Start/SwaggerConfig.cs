@@ -2,6 +2,11 @@ using System.Web.Http;
 using WebActivatorEx;
 using Mayiboy.IM.Host;
 using Swashbuckle.Application;
+using Swashbuckle.Swagger;
+using System.Collections.Generic;
+using System.Collections.Concurrent;
+using System.IO;
+using System.Xml;
 
 [assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
 
@@ -13,9 +18,10 @@ namespace Mayiboy.IM.Host
         {
             var thisAssembly = typeof(SwaggerConfig).Assembly;
 
-            GlobalConfiguration.Configuration 
+            GlobalConfiguration.Configuration
                 .EnableSwagger(c =>
                     {
+                        #region EnableSwagger
                         // By default, the service root url is inferred from the request used to access the docs.
                         // However, there may be situations (e.g. proxy and load-balanced environments) where this does not
                         // resolve correctly. You can workaround this by providing your own code to determine the root URL.
@@ -32,7 +38,7 @@ namespace Mayiboy.IM.Host
                         // hold additional metadata for an API. Version and title are required but you can also provide
                         // additional fields by chaining methods off SingleApiVersion.
                         //
-                        c.SingleApiVersion("v1", "Mayiboy.IM.Host");
+                        //c.SingleApiVersion("v1", "Mayiboy.IM.Host");
 
                         // If your API has multiple versions, use "MultipleApiVersions" instead of "SingleApiVersion".
                         // In this case, you must provide a lambda that tells Swashbuckle which actions should be
@@ -170,10 +176,18 @@ namespace Mayiboy.IM.Host
                         // Wrap the default SwaggerGenerator with additional behavior (e.g. caching) or provide an
                         // alternative implementation for ISwaggerProvider with the CustomProvider option.
                         //
-                        //c.CustomProvider((defaultProvider) => new CachingSwaggerProvider(defaultProvider));
+                        //c.CustomProvider((defaultProvider) => new CachingSwaggerProvider(defaultProvider)); 
+                        #endregion
+
+                        c.SingleApiVersion("v1", "即时通信在线接口文档");
+                        c.IncludeXmlComments(string.Format("{0}/bin/Mayiboy.IM.Host.XML", System.AppDomain.CurrentDomain.BaseDirectory));
+                        c.OperationFilter<GlobalHttpHeaderFilter>();
+
+                        c.CustomProvider((defaultProvider) => new CachingSwaggerProvider(defaultProvider));
                     })
                 .EnableSwaggerUi(c =>
                     {
+                        #region EnableSwaggerUi
                         // Use the "InjectStylesheet" option to enrich the UI with one or more additional CSS stylesheets.
                         // The file must be included in your project as an "Embedded Resource", and then the resource's
                         // "Logical Name" is passed to the method as shown below.
@@ -222,8 +236,136 @@ namespace Mayiboy.IM.Host
                         // If your API supports the OAuth2 Implicit flow, and you've described it correctly, according to
                         // the Swagger 2.0 specification, you can enable UI support as shown below.
                         //
-                        //c.EnableOAuth2Support("test-client-id", "test-realm", "Swagger UI");
+                        //c.EnableOAuth2Support("test-client-id", "test-realm", "Swagger UI"); 
+                        #endregion
+
+                        c.DocExpansion(DocExpansion.None);
+                        c.EnableDiscoveryUrlSelector();
+                        c.DisableValidator();
+                        c.InjectJavaScript(thisAssembly, "Mayiboy.IM.Host.Scripts.swaggerui.swagger_lang.js");
                     });
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class GlobalHttpHeaderFilter : IOperationFilter
+    {
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="operation"></param>
+        /// <param name="schemaRegistry"></param>
+        /// <param name="apiDescription"></param>
+        public void Apply(Operation operation, SchemaRegistry schemaRegistry, System.Web.Http.Description.ApiDescription apiDescription)
+        {
+            if (operation.parameters == null)
+            {
+                operation.parameters = new List<Parameter>();
+            }
+
+            //operation.parameters.Add(new Parameter
+            //{
+            //    //apptype
+            //    @in = "header",
+            //    name = "apptype",//header name
+            //                     //@default = "0",//0:Android；1：IOS
+            //    description = "应用类型0:未知； 1:Android；2：IOS",
+            //    required = true,
+            //    type = "string",
+            //    @enum = new List<object>() { "0", "1" }
+            //});
+
+            //operation.parameters.Add(new Parameter
+            //{
+            //    @in = "header",
+            //    name = "ciphertext",//header name
+            //    @default = "ciphertext",
+            //    description = "密文（app调用时忽略此参数）",
+            //    required = true,
+            //    type = "string",
+            //});
+
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class CachingSwaggerProvider : ISwaggerProvider
+    {
+        private static ConcurrentDictionary<string, SwaggerDocument> _cache = new ConcurrentDictionary<string, SwaggerDocument>();
+        private readonly ISwaggerProvider _swaggerProvider;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="swaggerProvider"></param>
+        public CachingSwaggerProvider(ISwaggerProvider swaggerProvider)
+        {
+            _swaggerProvider = swaggerProvider;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rootUrl"></param>
+        /// <param name="apiVersion"></param>
+        /// <returns></returns>
+        public SwaggerDocument GetSwagger(string rootUrl, string apiVersion)
+        {
+            var cacheKey = string.Format("{0}_{1}", rootUrl, apiVersion);
+            SwaggerDocument srcDoc = null;
+            //只读取一次
+            if (!_cache.TryGetValue(cacheKey, out srcDoc))
+            {
+                srcDoc = _swaggerProvider.GetSwagger(rootUrl, apiVersion);
+
+                srcDoc.vendorExtensions = new Dictionary<string, object> { { "ControllerDesc", GetControllerDesc() } };
+                _cache.TryAdd(cacheKey, srcDoc);
+            }
+            return srcDoc;
+        }
+
+        /// <summary>
+        /// 从API文档中读取控制器描述
+        /// </summary>
+        /// <returns>所有控制器描述</returns>
+        public static ConcurrentDictionary<string, string> GetControllerDesc()
+        {
+            string xmlpath = string.Format("{0}/bin/Mayiboy.IM.Host.XML", System.AppDomain.CurrentDomain.BaseDirectory);
+            ConcurrentDictionary<string, string> controllerDescDict = new ConcurrentDictionary<string, string>();
+            if (File.Exists(xmlpath))
+            {
+                XmlDocument xmldoc = new XmlDocument();
+                xmldoc.Load(xmlpath);
+
+                int cCount = "Controller".Length;
+                foreach (XmlNode node in xmldoc.SelectNodes("//member"))
+                {
+                    var type = node.Attributes["name"].Value;
+                    if (type.StartsWith("T:"))
+                    {
+                        //控制器
+                        var arrPath = type.Split('.');
+                        var length = arrPath.Length;
+                        var controllerName = arrPath[length - 1];
+                        if (controllerName.EndsWith("Controller"))
+                        {
+                            //获取控制器注释
+                            var summaryNode = node.SelectSingleNode("summary");
+                            string key = controllerName.Remove(controllerName.Length - cCount, cCount);
+                            if (summaryNode != null && !string.IsNullOrEmpty(summaryNode.InnerText) && !controllerDescDict.ContainsKey(key))
+                            {
+                                controllerDescDict.TryAdd(key, summaryNode.InnerText.Trim());
+                            }
+                        }
+                    }
+                }
+            }
+            return controllerDescDict;
         }
     }
 }

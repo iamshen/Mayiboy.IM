@@ -12,6 +12,9 @@ using Mayiboy.IM.Utils;
 
 namespace Mayiboy.IM.Host.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ChannelController : BaseApiController
     {
         private readonly IChannelMessageService _channelMessageService;
