@@ -3,7 +3,7 @@
   Vs2017、 MSSQL 2012、 Redis.
   
 #### 简介
-  消息推送使用 WebSocket, 消息分发使用Redis订阅，消息持久使用MSSql 2012保存.
+  消息推送使用 WebSocket. 消息分发使用Redis订阅. 消息持久使用MSSql 2012
   
 ####  项目结构
   项目：Mayiboy.IM.Admin.UI  ---->后台    
